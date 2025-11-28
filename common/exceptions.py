@@ -44,3 +44,8 @@ class AuthenticationError(AppError):
 class AuthorizationError(AppError):
     status_code = status.HTTP_403_FORBIDDEN
     error_code = "AUTHORIZATION_ERROR"
+
+
+class NotFoundError(AppError):
+    status_code = status.HTTP_404_NOT_FOUND
+    error_code = "NOT_FOUND_ERROR"
