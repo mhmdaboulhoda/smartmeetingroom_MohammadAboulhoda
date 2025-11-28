@@ -1,9 +1,11 @@
 fastapi
+passlib[bcrypt]
 uvicorn[standard]
 sqlalchemy
 psycopg2-binary
 python-dotenv
 pydantic
+python-jose
 pytest
 httpx
 line-profiler

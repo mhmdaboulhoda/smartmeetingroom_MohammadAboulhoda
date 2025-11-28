@@ -1,32 +1,37 @@
 """Database connection helpers shared across services."""
 
-import os
-from typing import Optional
+from contextlib import contextmanager
+from typing import Generator
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 from common.config import settings
 
+DATABASE_URL = settings.database_url
 
-def _active_service_name() -> Optional[str]:
-    for env_var in ("SMARTMEETINGROOM_SERVICE", "SERVICE_NAME"):
-        value = os.getenv(env_var)
-        if value:
-            return value
-    return None
-
-
-DATABASE_URL = settings.database_url_for(_active_service_name())
-
-engine = create_engine(DATABASE_URL, echo=False, future=True)
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+engine = create_engine(
+    DATABASE_URL,
+    future=True,
+    pool_pre_ping=True,
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
 
-def get_db():
-    """Yield a DB session, closing it afterwards."""
-    db = SessionLocal()
+@contextmanager
+def db_session() -> Generator[Session, None, None]:
+    """Context manager used by services and scripts."""
+
+    session = SessionLocal()
     try:
-        yield db
+        yield session
     finally:
-        db.close()
+        session.close()
+
+
+def get_db() -> Generator[Session, None, None]:
+    """FastAPI dependency that yields a DB session."""
+
+    with db_session() as session:
+        yield session
