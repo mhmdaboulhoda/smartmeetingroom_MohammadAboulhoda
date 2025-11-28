@@ -2,19 +2,24 @@
 
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Index, Integer, String, Text, func
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Index, Integer, Text, func
 from sqlalchemy.orm import relationship
 
 from common.db import Base
 
 
 class Review(Base):
-    """Feedback left by users for rooms."""
+    """Feedback left by users for rooms.
+
+    Indexes help the rooms API fetch reviews quickly and let moderators scan
+    flagged/hidden content without table scans.
+    """
 
     __tablename__ = "reviews"
     __table_args__ = (
         Index("idx_reviews_room_id", "room_id"),
         Index("idx_reviews_user_id", "user_id"),
+        Index("idx_reviews_hidden", "is_hidden"),
     )
 
     id = Column(Integer, primary_key=True, index=True)

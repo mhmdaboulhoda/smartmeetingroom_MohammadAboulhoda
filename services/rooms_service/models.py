@@ -3,7 +3,7 @@
 from datetime import datetime
 from enum import Enum
 
-from sqlalchemy import JSON, Column, DateTime, Enum as SQLEnum, Integer, String, func
+from sqlalchemy import JSON, Column, DateTime, Enum as SQLEnum, Index, Integer, String, func
 
 from common.db import Base
 
@@ -17,9 +17,18 @@ class RoomStatus(str, Enum):
 
 
 class Room(Base):
-    """Room entity stored in the shared database."""
+    """Room entity stored in the shared database.
+
+    Indexes on name/location/status keep search and availability filters fast when
+    users browse rooms and when the booking service validates availability.
+    """
 
     __tablename__ = "rooms"
+    __table_args__ = (
+        Index("idx_rooms_name", "name"),
+        Index("idx_rooms_location", "location"),
+        Index("idx_rooms_status", "status"),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), unique=True, nullable=False, index=True)

@@ -17,7 +17,11 @@ class UserRole(str, Enum):
 
 
 class User(Base):
-    """User account stored in PostgreSQL."""
+    """User account stored in PostgreSQL.
+
+    Username and email columns are indexed to accelerate login checks,
+    uniqueness validation, and search endpoints used by admins.
+    """
 
     __tablename__ = "users"
 

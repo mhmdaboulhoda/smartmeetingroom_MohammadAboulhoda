@@ -3,17 +3,7 @@
 from datetime import datetime
 from enum import Enum
 
-from sqlalchemy import (
-    Column,
-    DateTime,
-    Enum as SQLEnum,
-    ForeignKey,
-    Index,
-    Integer,
-    String,
-    UniqueConstraint,
-    func,
-)
+from sqlalchemy import Column, DateTime, Enum as SQLEnum, ForeignKey, Index, Integer, func
 from sqlalchemy.orm import relationship
 
 from common.db import Base
@@ -28,11 +18,15 @@ class BookingStatus(str, Enum):
 
 
 class Booking(Base):
-    """Represents a room reservation."""
+    """Represents a room reservation.
+
+    Indexes target the most common queries: listing bookings for a user,
+    finding overlaps for a room, and sorting by start time.
+    """
 
     __tablename__ = "bookings"
     __table_args__ = (
-        Index("idx_booking_room_time", "room_id", "start_time", "end_time"),
+        Index("idx_booking_room_time", "room_id", "start_time"),
         Index("idx_booking_user_id", "user_id"),
     )
 
