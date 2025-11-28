@@ -1,6 +1,7 @@
 """Database connection helpers shared across services."""
 
 import os
+from typing import Optional
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from common.config import settings
 
 
-def _active_service_name() -> str | None:
+def _active_service_name() -> Optional[str]:
     for env_var in ("SMARTMEETINGROOM_SERVICE", "SERVICE_NAME"):
         value = os.getenv(env_var)
         if value:
