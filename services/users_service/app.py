@@ -1,8 +1,10 @@
 """Users service FastAPI application."""
 
+import logging
 from typing import Any
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request, status
+from fastapi.responses import JSONResponse
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
@@ -13,12 +15,46 @@ from common.auth import (
     verify_password,
 )
 from common.db import get_db
+from common.exceptions import AppError, AuthenticationError, ConflictError
 from services.users_service import SERVICE_NAME
 from services.users_service.models import User, UserRole
 from services.users_service.schemas import Token, UserCreate, UserLogin, UserOut
 
+logger = logging.getLogger(__name__)
 app = FastAPI(title="Users Service")
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
+
+
+@app.exception_handler(AppError)
+async def handle_app_error(request: Request, exc: AppError):
+    """Normalize AppError responses."""
+
+    logger.warning("AppError on %s: %s", request.url.path, exc.message)
+    return JSONResponse(status_code=exc.status_code, content=exc.to_dict())
+
+
+@app.exception_handler(HTTPException)
+async def handle_http_exception(request: Request, exc: HTTPException):
+    """Return consistent payload for FastAPI HTTPException usage."""
+
+    logger.warning(
+        "HTTPException on %s: %s (status=%s)", request.url.path, exc.detail, exc.status_code
+    )
+    content = {"error_code": "HTTP_EXCEPTION", "message": exc.detail, "details": None}
+    return JSONResponse(status_code=exc.status_code, content=content)
+
+
+@app.exception_handler(Exception)
+async def handle_generic_exception(request: Request, exc: Exception):
+    """Catch-all handler to keep responses predictable."""
+
+    logger.exception("Unhandled exception on %s", request.url.path)
+    content = {
+        "error_code": "INTERNAL_SERVER_ERROR",
+        "message": "An unexpected error occurred",
+        "details": None,
+    }
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=content)
 
 
 @router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
@@ -34,10 +70,7 @@ def register_user(
         .first()
     )
     if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username or email already registered",
-        )
+        raise ConflictError("Username or email already registered")
 
     user = User(
         username=user_in.username,
@@ -61,10 +94,7 @@ def login(
 
     user = db.query(User).filter(User.username == login_data.username).first()
     if not user or not verify_password(login_data.password, user.password_hash):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
+        raise AuthenticationError("Incorrect username or password")
 
     token_payload: dict[str, Any] = {
         "sub": user.username,
@@ -81,7 +111,7 @@ async def read_current_user(current_user=Depends(get_current_user)):
     return current_user
 
 
-@app.get("/health")
+@router.get("/health", include_in_schema=False)
 async def health_check() -> dict[str, str]:
     """Health probe used by orchestrators and tests."""
 
