@@ -5,7 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from dotenv import load_dotenv
-from pydantic import BaseSettings, Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -19,14 +19,13 @@ if ENVIRONMENT == "development":
 class Settings(BaseSettings):
     """Load environment-driven settings for services."""
 
-    environment: str = Field(ENVIRONMENT, env="ENVIRONMENT")
-    database_url: str = Field(
-        "postgresql+psycopg2://user:password@localhost:5432/smartmeetingroom",
-        env="DATABASE_URL",
-    )
-    jwt_secret_key: str = Field("change-me", env="JWT_SECRET_KEY")
-    jwt_algorithm: str = Field("HS256", env="JWT_ALGORITHM")
-    access_token_expire_minutes: int = Field(30, env="ACCESS_TOKEN_EXPIRE_MINUTES")
+    model_config = SettingsConfigDict(extra="ignore", env_prefix="")
+
+    environment: str = ENVIRONMENT
+    database_url: str = "postgresql+psycopg2://user:password@localhost:5432/smartmeetingroom"
+    jwt_secret_key: str = "change-me"
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 30
 
 
 @lru_cache

@@ -74,7 +74,7 @@ def update_room(db: Session, room_id: int, room_update: RoomUpdate) -> Room:
     """Apply partial updates to a room."""
 
     room = get_room(db, room_id)
-    update_data = room_update.dict(exclude_unset=True)
+    update_data = room_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(room, field, value)
     db.add(room)
