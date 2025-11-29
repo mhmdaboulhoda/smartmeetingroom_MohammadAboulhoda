@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SmartMeetingRoom Documentation &#8212; SmartMeetingRoom 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture Overview" href="architecture.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="smartmeetingroom-documentation">
+<h1>SmartMeetingRoom Documentation<a class="headerlink" href="#smartmeetingroom-documentation" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#services">Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#database-schema">Database Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#execution-flow">Execution Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_users.html">Users API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_users.html#services.users_service.routers.users.register_user_endpoint"><code class="docutils literal notranslate"><span class="pre">register_user_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_users.html#services.users_service.routers.users.login_endpoint"><code class="docutils literal notranslate"><span class="pre">login_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_users.html#services.users_service.routers.users.read_current_user_endpoint"><code class="docutils literal notranslate"><span class="pre">read_current_user_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_users.html#services.users_service.routers.users.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_users.html#services.users_service.service.register_user"><code class="docutils literal notranslate"><span class="pre">register_user()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_users.html#services.users_service.service.login_user"><code class="docutils literal notranslate"><span class="pre">login_user()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_rooms.html">Rooms API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.routers.rooms.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.routers.rooms.create_room"><code class="docutils literal notranslate"><span class="pre">create_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.routers.rooms.list_rooms"><code class="docutils literal notranslate"><span class="pre">list_rooms()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.routers.rooms.get_room"><code class="docutils literal notranslate"><span class="pre">get_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.routers.rooms.update_room"><code class="docutils literal notranslate"><span class="pre">update_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.routers.rooms.delete_room"><code class="docutils literal notranslate"><span class="pre">delete_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.service.create_room"><code class="docutils literal notranslate"><span class="pre">create_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.service.get_room"><code class="docutils literal notranslate"><span class="pre">get_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.service.list_rooms"><code class="docutils literal notranslate"><span class="pre">list_rooms()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.service.update_room"><code class="docutils literal notranslate"><span class="pre">update_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.service.delete_room"><code class="docutils literal notranslate"><span class="pre">delete_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_rooms.html#services.rooms_service.service.invalidate_rooms_cache_for_room"><code class="docutils literal notranslate"><span class="pre">invalidate_rooms_cache_for_room()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_bookings.html">Bookings API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.routers.bookings.create_booking_endpoint"><code class="docutils literal notranslate"><span class="pre">create_booking_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.routers.bookings.list_my_bookings"><code class="docutils literal notranslate"><span class="pre">list_my_bookings()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.routers.bookings.list_all_bookings_endpoint"><code class="docutils literal notranslate"><span class="pre">list_all_bookings_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.routers.bookings.cancel_booking_endpoint"><code class="docutils literal notranslate"><span class="pre">cancel_booking_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.routers.bookings.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.service.create_booking"><code class="docutils literal notranslate"><span class="pre">create_booking()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.service.list_bookings_for_user"><code class="docutils literal notranslate"><span class="pre">list_bookings_for_user()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.service.list_all_bookings"><code class="docutils literal notranslate"><span class="pre">list_all_bookings()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_bookings.html#services.bookings_service.service.cancel_booking"><code class="docutils literal notranslate"><span class="pre">cancel_booking()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_reviews.html">Reviews API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.create_review_endpoint"><code class="docutils literal notranslate"><span class="pre">create_review_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.list_reviews_endpoint"><code class="docutils literal notranslate"><span class="pre">list_reviews_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.update_review_endpoint"><code class="docutils literal notranslate"><span class="pre">update_review_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.delete_review_endpoint"><code class="docutils literal notranslate"><span class="pre">delete_review_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.flag_review_endpoint"><code class="docutils literal notranslate"><span class="pre">flag_review_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.moderate_review_endpoint"><code class="docutils literal notranslate"><span class="pre">moderate_review_endpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.routers.reviews.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.service.create_review"><code class="docutils literal notranslate"><span class="pre">create_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.service.update_review"><code class="docutils literal notranslate"><span class="pre">update_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.service.delete_review"><code class="docutils literal notranslate"><span class="pre">delete_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.service.list_reviews_for_room"><code class="docutils literal notranslate"><span class="pre">list_reviews_for_room()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.service.flag_review"><code class="docutils literal notranslate"><span class="pre">flag_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reviews.html#services.reviews_service.service.moderate_review"><code class="docutils literal notranslate"><span class="pre">moderate_review()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#room-list-caching">Room List Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#database-indexing">Database Indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#profiling">Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#docker-compose">Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#startup-steps">Startup Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#testing-with-postman">Testing with Postman</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">SmartMeetingRoom</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_users.html">Users API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_rooms.html">Rooms API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_bookings.html">Bookings API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reviews.html">Reviews API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="architecture.html" title="next chapter">Architecture Overview</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     environment: str = ENVIRONMENT
     database_url: str = "postgresql+psycopg2://user:password@localhost:5432/smartmeetingroom"
-    jwt_secret_key: str = "change-me"
+    jwt_secret_key: str = "change-me-in-prod"
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
 
