@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from common.auth import get_current_user, require_roles
 from common.db import get_db
+from services.bookings_service import SERVICE_NAME
 from services.bookings_service.schemas import BookingCreate, BookingOut
 from services.bookings_service.service import (
     cancel_booking,
@@ -62,3 +63,10 @@ def cancel_booking_endpoint(
     """Cancel a booking based on the RBAC rules."""
 
     return cancel_booking(db, current_user, booking_id)
+
+
+@router.get("/health", include_in_schema=False)
+async def health_check() -> dict[str, str]:
+    """Health probe for orchestrators."""
+
+    return {"status": "ok", "service": SERVICE_NAME}

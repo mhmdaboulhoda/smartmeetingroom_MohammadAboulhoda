@@ -1,5 +1,6 @@
 """Business logic for managing rooms."""
 
+import logging
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
@@ -9,10 +10,13 @@ from services.rooms_service.cache import rooms_cache
 from services.rooms_service.models import Room, RoomStatus
 from services.rooms_service.schemas import RoomCreate, RoomUpdate
 
+logger = logging.getLogger(__name__)
+
 
 def create_room(db: Session, room_in: RoomCreate) -> Room:
     """Persist a new room ensuring uniqueness."""
 
+    logger.info("Creating room %s", room_in.name)
     existing = db.query(Room).filter(Room.name == room_in.name).first()
     if existing:
         raise ConflictError("Room name already exists")
@@ -28,6 +32,7 @@ def create_room(db: Session, room_in: RoomCreate) -> Room:
     db.commit()
     db.refresh(room)
     invalidate_rooms_cache_for_room(room.id)
+    logger.debug("Room %s created with id %s", room_in.name, room.id)
     return room
 
 
@@ -73,6 +78,7 @@ def list_rooms(
 def update_room(db: Session, room_id: int, room_update: RoomUpdate) -> Room:
     """Apply partial updates to a room."""
 
+    logger.info("Updating room id %s", room_id)
     room = get_room(db, room_id)
     update_data = room_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
@@ -81,12 +87,14 @@ def update_room(db: Session, room_id: int, room_update: RoomUpdate) -> Room:
     db.commit()
     db.refresh(room)
     invalidate_rooms_cache_for_room(room.id)
+    logger.debug("Room id %s updated", room_id)
     return room
 
 
 def delete_room(db: Session, room_id: int) -> None:
     """Delete a room."""
 
+    logger.info("Deleting room id %s", room_id)
     room = get_room(db, room_id)
     db.delete(room)
     db.commit()
@@ -98,3 +106,4 @@ def invalidate_rooms_cache_for_room(room_id: Optional[int] = None) -> None:
 
     # Simple strategy: flush entire cache when any write occurs.
     rooms_cache.invalidate()
+    logger.debug("Rooms cache invalidated for room id %s", room_id)

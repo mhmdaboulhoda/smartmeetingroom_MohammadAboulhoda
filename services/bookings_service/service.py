@@ -1,7 +1,8 @@
 """Business logic for managing bookings."""
 
+import logging
 from datetime import datetime
-from typing import List
+from typing import Any, List
 
 from fastapi import status
 from sqlalchemy.orm import Session
@@ -10,6 +11,8 @@ from common.exceptions import AppError, NotFoundError
 from services.bookings_service.models import Booking, BookingStatus
 from services.bookings_service.schemas import BookingCreate, BookingOut, BookingUpdate, RoomRef, UserRef
 from services.rooms_service.models import Room, RoomStatus
+
+logger = logging.getLogger(__name__)
 
 
 def _role_value(user) -> str:
@@ -70,9 +73,10 @@ def _serialize(booking: Booking) -> BookingOut:
     )
 
 
-def create_booking(db: Session, current_user, booking_in: BookingCreate) -> BookingOut:
+def create_booking(db: Session, current_user: Any, booking_in: BookingCreate) -> BookingOut:
     """Create a confirmed booking for the requesting user."""
 
+    logger.info("Creating booking for user %s room %s", current_user.id, booking_in.room_id)
     _validate_time_range(booking_in.start_time, booking_in.end_time)
     _ensure_room_available(db, booking_in.room_id)
     _check_overlap(db, booking_in.room_id, booking_in.start_time, booking_in.end_time)
@@ -87,10 +91,11 @@ def create_booking(db: Session, current_user, booking_in: BookingCreate) -> Book
     db.add(booking)
     db.commit()
     db.refresh(booking)
+    logger.debug("Booking %s created", booking.id)
     return _serialize(booking)
 
 
-def list_bookings_for_user(db: Session, current_user) -> List[BookingOut]:
+def list_bookings_for_user(db: Session, current_user: Any) -> List[BookingOut]:
     bookings = (
         db.query(Booking)
         .filter(Booking.user_id == current_user.id)
@@ -100,7 +105,7 @@ def list_bookings_for_user(db: Session, current_user) -> List[BookingOut]:
     return [_serialize(b) for b in bookings]
 
 
-def list_all_bookings(db: Session, current_user) -> List[BookingOut]:
+def list_all_bookings(db: Session, current_user: Any) -> List[BookingOut]:
     role = _role_value(current_user)
     if role not in {"ADMIN", "FACILITY_MANAGER"}:
         raise AppError(
@@ -112,7 +117,7 @@ def list_all_bookings(db: Session, current_user) -> List[BookingOut]:
     return [_serialize(b) for b in bookings]
 
 
-def cancel_booking(db: Session, current_user, booking_id: int) -> BookingOut:
+def cancel_booking(db: Session, current_user: Any, booking_id: int) -> BookingOut:
     booking = db.get(Booking, booking_id)
     if not booking:
         raise NotFoundError("Booking not found")
@@ -129,10 +134,12 @@ def cancel_booking(db: Session, current_user, booking_id: int) -> BookingOut:
     if not owns_booking and role == "ADMIN":
         # Documented behavior: Admins overriding someone else mark booking as OVERRIDDEN.
         booking.status = BookingStatus.OVERRIDDEN
+        logger.info("Admin overriding booking %s", booking_id)
     else:
         booking.status = BookingStatus.CANCELED
 
     db.add(booking)
     db.commit()
     db.refresh(booking)
+    logger.debug("Booking %s status changed to %s", booking_id, booking.status)
     return _serialize(booking)
