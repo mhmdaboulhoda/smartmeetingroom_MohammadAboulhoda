@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: smartmeetingroom
+      POSTGRES_USER: smartuser
+      POSTGRES_PASSWORD: smartpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - smartnet
+
+  users:
+    build:
+      context: .
+      dockerfile: services/users_service/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://smartuser:smartpass@db:5432/smartmeetingroom
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8001:8000"
+    networks:
+      - smartnet
+
+  rooms:
+    build:
+      context: .
+      dockerfile: services/rooms_service/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://smartuser:smartpass@db:5432/smartmeetingroom
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8002:8000"
+    networks:
+      - smartnet
+
+  bookings:
+    build:
+      context: .
+      dockerfile: services/bookings_service/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://smartuser:smartpass@db:5432/smartmeetingroom
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8003:8000"
+    networks:
+      - smartnet
+
+  reviews:
+    build:
+      context: .
+      dockerfile: services/reviews_service/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://smartuser:smartpass@db:5432/smartmeetingroom
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8004:8000"
+    networks:
+      - smartnet
+
+networks:
+  smartnet:
+    driver: bridge
+
+volumes:
+  pgdata:

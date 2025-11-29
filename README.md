@@ -22,3 +22,17 @@ This repository hosts a microservice-based FastAPI backend used for the Smart Me
 3. Probe the service health with `curl http://127.0.0.1:8001/health`.
 
 Each service is intentionally minimal to keep the focus on architecture. Add routers, models, and persistence logic as the project evolves.
+
+## Docker Compose deployment
+
+1. Copy `.env.docker` as needed and adjust secrets (the file ships with demo credentials).
+2. Build and start everything:
+   ```bash
+   docker-compose up --build
+   ```
+3. Health checks (replace port with service port):
+   ```bash
+   curl http://localhost:8001/api/v1/users/health
+   curl http://localhost:8002/api/v1/rooms/health
+   ```
+4. Swagger UI is available on each service at `/docs` (e.g. `http://localhost:8001/docs`).
