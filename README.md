@@ -36,3 +36,7 @@ Each service is intentionally minimal to keep the focus on architecture. Add rou
    curl http://localhost:8002/api/v1/rooms/health
    ```
 4. Swagger UI is available on each service at `/docs` (e.g. `http://localhost:8001/docs`).
+
+## Contributing
+
+See `CONTRIBUTING.md` for coding standards (service layout, formatting via `format.sh`, etc.) and for guidance on adding new endpoints.

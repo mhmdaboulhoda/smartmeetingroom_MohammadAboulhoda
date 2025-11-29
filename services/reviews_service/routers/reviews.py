@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from common.auth import get_current_user, require_roles
 from common.db import get_db
+from services.reviews_service import SERVICE_NAME
 from services.reviews_service.schemas import (
     ReviewCreate,
     ReviewModerationAction,
@@ -93,3 +94,10 @@ def moderate_review_endpoint(
     """Moderate a review (hide/unhide/clear flags)."""
 
     return moderate_review(db, current_user, review_id, action.action)
+
+
+@router.get("/health", include_in_schema=False)
+async def health_check() -> dict[str, str]:
+    """Health probe for orchestrators."""
+
+    return {"status": "ok", "service": SERVICE_NAME}

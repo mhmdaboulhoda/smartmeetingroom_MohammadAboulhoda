@@ -21,6 +21,13 @@ from services.rooms_service.service import (
 router = APIRouter(prefix="/api/v1/rooms", tags=["rooms"])
 
 
+@router.get("/health", include_in_schema=False)
+async def health_check() -> dict[str, str]:
+    """Health probe for orchestrators."""
+
+    return {"status": "ok", "service": SERVICE_NAME}
+
+
 @router.post(
     "/",
     response_model=RoomOut,
@@ -92,10 +99,3 @@ def delete_room(
 
     delete_room_service(db, room_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-
-@router.get("/health", include_in_schema=False)
-async def health_check() -> dict[str, str]:
-    """Health probe for orchestrators."""
-
-    return {"status": "ok", "service": SERVICE_NAME}
