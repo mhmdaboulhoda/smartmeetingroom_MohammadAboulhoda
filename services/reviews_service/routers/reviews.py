@@ -97,7 +97,7 @@ def moderate_review_endpoint(
 
 
 @router.get("/health", include_in_schema=False)
-async def health_check() -> dict[str, str]:
+def health_check() -> dict[str, str]:
     """Health probe for orchestrators."""
 
     return {"status": "ok", "service": SERVICE_NAME}

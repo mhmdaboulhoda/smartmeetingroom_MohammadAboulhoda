@@ -1,12 +1,18 @@
 """Quick script to demonstrate rooms cache timing differences."""
 
+import sys
 import time
+from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from services.rooms_service import service as rooms_service
-from services.rooms_service.models import Room, RoomStatus
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from services.rooms_service import service as rooms_service  # noqa: E402
+from services.rooms_service.models import Room, RoomStatus  # noqa: E402
 
 
 def seed_rooms(session):

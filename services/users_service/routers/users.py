@@ -35,7 +35,7 @@ def read_current_user_endpoint(current_user: User = Depends(get_current_user)) -
 
 
 @router.get("/health", include_in_schema=False)
-async def health_check() -> dict[str, str]:
+def health_check() -> dict[str, str]:
     """Health probe used by orchestrators and tests."""
 
     return {"status": "ok", "service": SERVICE_NAME}
