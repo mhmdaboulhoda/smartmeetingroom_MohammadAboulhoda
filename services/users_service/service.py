@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def register_user(db: Session, user_in: UserCreate) -> User:
-    """Persist a new user with the default REGULAR role."""
+    """Persist a new user with the requested role (default REGULAR)."""
 
     logger.info("Registering user %s", user_in.username)
     existing_user = (
@@ -31,7 +31,7 @@ def register_user(db: Session, user_in: UserCreate) -> User:
         email=user_in.email,
         full_name=user_in.full_name,
         password_hash=get_password_hash(user_in.password),
-        role=UserRole.REGULAR,
+        role=user_in.role,
     )
     db.add(user)
     db.commit()
